@@ -6,9 +6,9 @@ import java.util.List;
 import utils.Point3D;
 
 public class NodeData implements node_data {
-	
-	
-	
+
+
+
 	private int key=0,tag=0;
 	public static int num =0;
 	public static final double INFINITY= Double.POSITIVE_INFINITY;
@@ -16,23 +16,23 @@ public class NodeData implements node_data {
 	private double weight = INFINITY ;
 	private Point3D location;
 	private String Info;
-	
+
 	public  HashMap<Integer, edge_data>  enteringEdges  = new HashMap<Integer, edge_data>();
 	public  HashMap<Integer, edge_data> OutEdges = new HashMap<Integer, edge_data>();
-	
-/////////////////////////////////////////////////////////////////////////////////////////
 
-	
+	/////////////////////////////////////////////////////////////////////////////////////////
+
+
 	/////////////////////////////////////////////////////////////////
-    ///////////////////     Constructor     /////////////////////////
-    /////////////////////////////////////////////////////////////////
-	
+	///////////////////     Constructor     /////////////////////////
+	/////////////////////////////////////////////////////////////////
+
 	public NodeData( Point3D p) {
 		this.key = num++;
 		setLocation(p);
 		enteringEdges = new HashMap<Integer, edge_data>();
 		OutEdges = new HashMap<Integer, edge_data>();
-		
+
 	}
 	public 	NodeData(NodeData n) {
 		this.key=n.getKey();
@@ -42,11 +42,11 @@ public class NodeData implements node_data {
 		this.tag = n.getTag();
 		this.OutEdges = n.OutEdges;
 		this.enteringEdges = n.enteringEdges;
-	
-		
+
+
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public int getKey() {
 		return this.key;
@@ -54,8 +54,10 @@ public class NodeData implements node_data {
 
 	@Override
 	public Point3D getLocation() {
-		
-		return this.location;
+		if(this.location != null) {
+			return this.location;
+		}
+		return null;
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class NodeData implements node_data {
 
 	@Override
 	public double getWeight() {
-		
+
 		return this.weight;
 	}
 
@@ -77,7 +79,7 @@ public class NodeData implements node_data {
 
 	@Override
 	public String getInfo() {
-		
+
 		return this.Info;
 	}
 
@@ -88,7 +90,7 @@ public class NodeData implements node_data {
 
 	@Override
 	public int getTag() {
-		
+
 		return this.tag;
 	}
 

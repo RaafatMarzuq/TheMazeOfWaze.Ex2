@@ -58,8 +58,8 @@ class NodeDataTEST {
 
 	@Test
 	void testGetLocation() {
-	
-		assertEquals(p, n.getLocation());
+		
+		assertEquals(p.x(), n.getLocation().x());
 	}
 
 	@Test
