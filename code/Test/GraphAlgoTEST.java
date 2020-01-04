@@ -14,7 +14,7 @@ import dataStructure.node_data;
 import utils.Point3D;
 
 class GraphAlgoTEST {
-	Graph_Algo B = new Graph_Algo();
+	
 	 
 	
 	@Test

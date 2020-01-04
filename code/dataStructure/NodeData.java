@@ -15,9 +15,8 @@ public class NodeData implements node_data {
 
 	private double weight = INFINITY ;
 	private Point3D location;
-	private String Info;
+	private String Info="";
 
-	public  HashMap<Integer, edge_data>  enteringEdges  = new HashMap<Integer, edge_data>();
 	public  HashMap<Integer, edge_data> OutEdges = new HashMap<Integer, edge_data>();
 
 	/////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +29,6 @@ public class NodeData implements node_data {
 	public NodeData( Point3D p) {
 		this.key = num++;
 		setLocation(p);
-		enteringEdges = new HashMap<Integer, edge_data>();
 		OutEdges = new HashMap<Integer, edge_data>();
 
 	}
@@ -41,7 +39,6 @@ public class NodeData implements node_data {
 		this.weight = n.getWeight();
 		this.tag = n.getTag();
 		this.OutEdges = n.OutEdges;
-		this.enteringEdges = n.enteringEdges;
 
 
 	}

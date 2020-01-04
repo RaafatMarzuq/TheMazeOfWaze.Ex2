@@ -1,11 +1,15 @@
 package gui;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import algorithms.Graph_Algo;
 import algorithms.graph_algorithms;
 import dataStructure.DGraph;
 import dataStructure.NodeData;
 import dataStructure.graph;
+import dataStructure.node_data;
 import utils.Point3D;
 
 public class mainGUI {
@@ -13,9 +17,9 @@ public class mainGUI {
 	public static void main(String[] args) {
 		DGraph g = new DGraph();
 
-		Point3D p1=new Point3D(0,0);
-		Point3D p2=new Point3D(61,1);
-		Point3D p3=new Point3D(-115,-180);
+		Point3D p1=new Point3D(0,-140);
+		Point3D p2=new Point3D(-120,-20);
+		Point3D p3=new Point3D(-320,0);
 		Point3D p4=new Point3D(97,100);
 		Point3D p5=new Point3D(150,-120);
 		Point3D p6=new Point3D(114,150);
@@ -45,16 +49,7 @@ public class mainGUI {
 		((graph) g).addNode(h);
 		((graph) g).addNode(i);
 
-		System.out.println(a.getKey());
-		System.out.println(b.getKey());
-		System.out.println(c.getKey());
-		System.out.println(d.getKey());
-		System.out.println(e.getKey());
-		System.out.println(f.getKey());
-		System.out.println(j.getKey());
-		System.out.println(h.getKey());
-		System.out.println(i.getKey());
-
+	
 
 		((graph) g).connect(a.getKey(),b.getKey(),4);
 		((graph) g).connect(b.getKey(),c.getKey(), 2);
@@ -64,33 +59,45 @@ public class mainGUI {
 		((graph) g).connect(f.getKey(),j.getKey(), 2);
 		((graph) g).connect(j.getKey(),h.getKey(),4);
 		((graph) g).connect(h.getKey(),i.getKey(), 2);
-		((graph) g).connect(i.getKey(),a.getKey(), 12);
-		((graph) g).connect(d.getKey(),f.getKey(), 32);
+		((graph) g).connect(i.getKey(),a.getKey(), 2);
+		((graph) g).connect(d.getKey(),f.getKey(), 12);
 		((graph) g).addNode(t);
 		g.connect(6,9,2);
 		g.connect(9, 5, 4);
-	//	g.removeEdge(d.getKey(),f.getKey());
-//		g.removeEdge(8, 0);
-//		g.removeEdge(8, 0);
-//		g.removeNode(8);
-//	  g.removeNode(1);
-//	  g.removeNode(2);
-//	  g.removeNode(3);
-//	  g.removeNode(4);
-//	  g.removeNode(5);
-//	  g.removeNode(6);
-//	  g.removeNode(7);
-//	  g.removeNode(8);
-	//  g.removeNode(9);
-	//	g.removeEdge(9, 5);
-	//	g.removeEdge(6, 9);
-
+	
+ System.out.println(g.edgeSize());
 		graphGUI bro = new graphGUI(g);
-		Graph_Algo f2=new Graph_Algo();
+		Graph_Algo f2=new Graph_Algo(g);
 		f2.init(g);
 		bro.drawAll();
 		System.out.println(f2.isConnected());
-		System.out.println(f2.shortestPathDist(6, 5));
+
+		System.out.println(f2.shortestPathDist(3,2));
+
+		
+				
+		List<node_data> l= f2.shortestPath(3,2);
+		if(l == null) {
+			System.out.println("empty");
+			
+		}
+//		List<Integer> targets= new ArrayList<Integer>();
+//		targets.add(0);
+//		targets.add(1);targets.add(2);
+//		targets.add(3);targets.add(4);targets.add(5);targets.add(6);
+	//			List<node_data> l2= f2.TSP(targets);
+	else
+			System.out.println("desr info"+ g.getNode(2).getInfo());
+//		
+		
+			for(node_data no:l) {
+			System.out.print("->"+ no.getKey());
+			
+			
+
+		}
+			
+		
 
 }
 }

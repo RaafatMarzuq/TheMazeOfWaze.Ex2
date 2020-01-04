@@ -83,5 +83,4 @@ public interface graph {
  * @return
  */
 	public int getMC();
-void set_infinity();
 }

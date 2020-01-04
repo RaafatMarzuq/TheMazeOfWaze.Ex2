@@ -22,6 +22,12 @@ public class edge implements edge_data {
 
 	}
 
+	public edge() {
+		this.dest=0;
+		this.weight = Double.POSITIVE_INFINITY;
+		
+	}
+
 	@Override
 	public int getSrc() {
 		return this.src;

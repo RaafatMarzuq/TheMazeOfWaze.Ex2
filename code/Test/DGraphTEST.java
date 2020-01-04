@@ -112,11 +112,6 @@ class DGraphTEST {
 		g.addNode(n1);
 		edge_data e1 = new edge(n.getKey(),n1.getKey(),10);
 		g.connect(n.getKey(), n1.getKey(), e1.getWeight());
-		System.out.println(g.getE(n.getKey()).toString() +"--->" + g.getE(n1.getKey()).toString());
-		System.out.println("n<-- entring edges: "+ n.enteringEdges.toString() + "\n" +"n--> out edges; "
-				+n.OutEdges.toString());
-		System.out.println("n1<-- entring edges: "+ n1.enteringEdges.toString() + "\n" +"n1--> out edges; "
-				+n1.OutEdges.toString());
 		if(!g.R.get(n.getKey()).containsKey(n1.getKey())) {
 			fail("Not yet implemented");
 		}
@@ -211,23 +206,16 @@ class DGraphTEST {
 		Point3D p3= new Point3D(123, 234);
 		NodeData n3 = new NodeData(p3) ;
 		g.addNode(n3);
-		edge_data e1 = new edge(n.getKey(),n1.getKey(),10);
-		edge_data e2 = new edge(n1.getKey(),n2.getKey(),10);
-		edge_data e3 = new edge(n2.getKey(),n.getKey(),10);
-		edge_data e4 = new edge(n.getKey(),n3.getKey(),10);
-		g.connect(n.getKey(), n3.getKey(), e4.getWeight());
-		g.connect(n.getKey(), n1.getKey(), e1.getWeight());
-		g.connect(n1.getKey(),n2.getKey() , e2.getWeight());
-		g.connect(n2.getKey(),n.getKey(), e3.getWeight());
+		g.connect(n.getKey(), n3.getKey(), 10);
+		g.connect(n.getKey(), n1.getKey(),10);
+		g.connect(n1.getKey(),n2.getKey() , 10);
+		g.connect(n2.getKey(),n.getKey(), 10);
 
-		g.removeNode(n.getKey());
-		if(g.getNode(n.getKey()) != null) {
+		g.removeNode(n1.getKey());
+		if(g.G.containsKey(n1)) {
 			fail("node has not been removed");
 
 		}
-		System.out.println(g.getNode(n.getKey()) );
-
-
 	}
 
 	@Test

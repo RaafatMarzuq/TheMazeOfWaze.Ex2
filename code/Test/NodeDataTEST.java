@@ -44,13 +44,6 @@ class NodeDataTEST {
 			fail("Check your Node parametirs");
 
 		}
-		if(!n4.enteringEdges.isEmpty() ) {
-			fail("Check your Node parametirs");
-
-		}
-	
-		
-
 	}
 
 	
