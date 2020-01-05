@@ -25,6 +25,13 @@ The main purpose of this project is to build any directed graph using the Nodes 
   ****graphGUI**** :- use it to draw the graph we build .
  for example her are some graphs :
 
-****1)**** ![aaa](https://user-images.githubusercontent.com/57416873/71770987-c3ef3b00-2f3c-11ea-803b-29132f3039a3.png)
+****1)**** 
+![‏‏צילום מסך (25)](https://user-images.githubusercontent.com/57416873/71784590-9e763600-2ffd-11ea-890f-f86bcfcef8f4.png)
+
+
+
+
+![‏‏צילום מסך (27)](https://user-images.githubusercontent.com/57416873/71784593-a1712680-2ffd-11ea-9689-91a7dd593834.png)
+
  
  
