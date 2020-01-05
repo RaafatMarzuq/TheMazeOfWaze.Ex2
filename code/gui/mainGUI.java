@@ -65,39 +65,15 @@ public class mainGUI {
 		g.connect(6,9,2);
 		g.connect(9, 5, 4);
 	
- System.out.println(g.edgeSize());
 		graphGUI bro = new graphGUI(g);
 		Graph_Algo f2=new Graph_Algo(g);
 		f2.init(g);
 		bro.drawAll();
-		System.out.println(f2.isConnected());
-
-		System.out.println(f2.shortestPathDist(3,2));
-
 		
-				
-		List<node_data> l= f2.shortestPath(3,2);
-		if(l == null) {
-			System.out.println("empty");
-			
-		}
-//		List<Integer> targets= new ArrayList<Integer>();
-//		targets.add(0);
-//		targets.add(1);targets.add(2);
-//		targets.add(3);targets.add(4);targets.add(5);targets.add(6);
-	//			List<node_data> l2= f2.TSP(targets);
-	else
-			System.out.println("desr info"+ g.getNode(2).getInfo());
-//		
-		
-			for(node_data no:l) {
-			System.out.print("->"+ no.getKey());
-			
-			
 
 		}
 			
 		
 
-}
+
 }

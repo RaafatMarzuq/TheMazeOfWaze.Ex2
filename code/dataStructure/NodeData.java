@@ -1,11 +1,12 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
 import utils.Point3D;
 
-public class NodeData implements node_data {
+public class NodeData implements node_data,Serializable {
 
 
 

@@ -61,8 +61,10 @@ import java.io.IOException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
@@ -73,7 +75,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import dataStructure.NodeData;
+import dataStructure.node_data;
+import gui.graphGUI;
 
 /**
  *  The {@code StdDraw} class provides a basic capability for
@@ -598,7 +605,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	private static final double DEFAULT_YMIN = 0.0;
 	private static final double DEFAULT_YMAX = 1.0;
 	private static double xmin, ymin, xmax, ymax;
-
+	private static final String RemoveNode = "remove Node";
 	// for synchronization
 	private static Object mouseLock = new Object();
 	private static Object keyLock = new Object();
@@ -699,10 +706,15 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 
 		draw.addMouseListener(std);
 		draw.addMouseMotionListener(std);
+		draw.addMouseListener(std);
+		draw.addMouseListener(std);
+		draw.addMouseListener(std);
+		draw.addMouseListener(std);
+		draw.addMouseListener(std);
 
 		frame.setContentPane(draw);
 		frame.addKeyListener(std);    // JLabel cannot get keyboard focus
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            // closes all windows
 		// frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);      // closes only current window
 		frame.setTitle("The Maze Of Waze ");
@@ -717,17 +729,29 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
 		JMenu menu1 = new JMenu("Graph Algo");
+		JMenu menu2 = new JMenu("Make Changes");
 
 		menuBar.add(menu);
 		menuBar.add(menu1);
+		menuBar.add(menu2);
 
-		JMenuItem menuItem1 = new JMenuItem(" Save...   ");
-		JMenuItem menuItem2 = new JMenuItem("load from...   ");
-		
-		JMenuItem menuItem10 = new JMenuItem("isConnected");
+		JMenuItem menuItem1 = new JMenuItem("Save...");
+		JMenuItem menuItem2 = new JMenuItem("load from...");
+		JMenuItem menuItem10 = new JMenuItem("is Connected ?");
 		JMenuItem menuItem11 = new JMenuItem("Shortest Path Dist'");
 		JMenuItem menuItem12 = new JMenuItem("Shortest Path List");
-		JMenuItem menuItem13 = new JMenuItem("TSP ");
+		JMenuItem menuItem13 = new JMenuItem("TSP");
+		
+		JMenuItem menuItem20 = new JMenuItem("add Node");
+		JMenuItem menuItem21 = new JMenuItem("remove Node");
+		JMenuItem menuItem22 = new JMenuItem("Connect");
+		JMenuItem menuItem23 = new JMenuItem("remove Edge");
+
+		menuItem20.addActionListener(std);
+		menuItem21.addActionListener(std);
+		menuItem22.addActionListener(std);
+		menuItem23.addActionListener(std);
+
 		
 		menuItem10.addActionListener(std);
 		menuItem11.addActionListener(std);
@@ -747,7 +771,14 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		menu1.add(menuItem12);
 		menu1.add(menuItem13);
 		menu1.add(menuItem10);
-
+	
+		menu2.add(menuItem20);
+		menu2.add(menuItem21);
+		menu2.add(menuItem22);
+		menu2.add(menuItem23);
+		
+		menu2.addActionListener(std);
+		menu1.addActionListener(std);
 		return menuBar;
 	}
 
@@ -1674,19 +1705,380 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		}
 	}
 
-
+	private static graphGUI gui;
+	public static void setGui(graphGUI g) {
+		gui = g;
+//		gui.algo.init(g.g);
+	}
 	/**
 	 * This method cannot be called directly.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
-		chooser.setVisible(true);
-		String filename = chooser.getFile();
-		if (filename != null) {
-			StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+		
+		switch (e.getActionCommand()) {
+
+
+		case "Save...":
+			
+			String options = JOptionPane.showInputDialog(null, "how do you want to save it??\n .png or .txt ?");
+			options.toLowerCase();
+			if(options.equals(".png")){
+				String fileName = JOptionPane.showInputDialog(null, "File name: ");
+				fileName = "graphs/" + fileName + ".png";
+
+				StdDraw.save(fileName);
+			}
+			else {
+			String fileName = JOptionPane.showInputDialog(null, "File name: ");
+		
+			if (fileName != null) {
+				fileName = "graphs/" + fileName + ".txt";
+				
+				gui.algo.save(fileName);
+			}
+			}
+			break;
+
+		case "load from...":
+			String path = "graphs";
+			File folder = new File(path);
+			File[] possibleValues = folder.listFiles();
+			Object selectedValue = JOptionPane.showInputDialog(null, "Choose file", "Message",
+					JOptionPane.INFORMATION_MESSAGE, null, possibleValues, possibleValues[0]);
+
+			if (selectedValue!=null)
+				gui.algo.init(selectedValue.toString());
+
+			break;
+			
+		case "Shortest Path Dist'":
+			try {
+				StringBuilder sb = new StringBuilder(); 
+				double d = path(sb);
+				if(d==Double.POSITIVE_INFINITY) break;
+				JOptionPane.showMessageDialog(null, "The shortest path is: "+d);
+			}
+			catch(Exception ex) {
+			}
+
+			break;
+
+		case "Shortest Path List":
+			try {
+				StringBuilder sbuilder = new StringBuilder(); 
+				node_data d =SHPA(sbuilder);
+				d.setInfo(d.getInfo() + "->" + d.getKey());
+				if (d.getWeight() == Double.POSITIVE_INFINITY) break;
+				
+				
+				if(sbuilder.length()!=0)
+					
+					JOptionPane.showMessageDialog(null, "The path is: "+d.getInfo());
+			}
+			catch(Exception ex) {
+			}
+			break;
+
+		case "TSP":
+			if(gui.g.nodeSize()==0) break;
+			gui.drawAll();
+
+			Collection<node_data> tspNodes = gui.g.getV();
+			if(tspNodes.isEmpty()) break;
+			String[] tspArr = new String[tspNodes.size()];
+			int t = 0;
+			for (node_data node : tspNodes) {
+				tspArr[t] = node.getKey() + "";
+				t++;
+			}
+			gui.drawEdges();
+			gui.drawNodes();
+
+			ArrayList<Integer> targets = new ArrayList<>();
+			String tspCount = JOptionPane.showInputDialog(null, "How many nodes? ");
+			if (tspCount==null) break;
+
+			for(int c=0; c<Integer.parseInt(tspCount);c++) {
+				Object selectedNode = JOptionPane.showInputDialog(null, "Choose a node", "Message",
+						JOptionPane.INFORMATION_MESSAGE, null, tspArr, tspArr[0]);
+				if(selectedNode==null) break;
+
+				targets.add(Integer.parseInt(selectedNode.toString()));
+			}
+			StringBuilder stb = new StringBuilder();
+			StdDraw.setPenRadius(0.005);
+			StdDraw.setPenColor(Color.green);
+			ArrayList<node_data> tspList =  (ArrayList<node_data>) gui.algo.TSP(targets);
+
+			if(!tspList.isEmpty()) {
+				if(tspList.size()==1) {
+				 JOptionPane.showMessageDialog(null, "You need more than one node");
+				 break;
+				}
+				for (int m = 0; m < tspList.size() ; m++) {
+
+					line(tspList.get(m).getLocation().x(), tspList.get(m).getLocation().y(), tspList.get(m + 1).getLocation().x(),
+							tspList.get(m + 1).getLocation().y());
+
+					stb.append(tspList.get(m).toString()+"->");
+				}
+				stb.append(tspList.get(tspList.size())+"");
+
+				JOptionPane.showMessageDialog(null, "TSP: " + stb.toString());
+
+			}
+			else JOptionPane.showMessageDialog(null, "No route");
+
+			break;
+			
+		case "is Connected ?":
+			if(gui.g.nodeSize()==0) break;
+			boolean b = (gui.algo.isConnected());
+			if (b==true)
+				JOptionPane.showMessageDialog(null, "The graph is connected");
+
+			else
+				JOptionPane.showMessageDialog(null, "The graph is NOT connected", "Message", 0);
+			break;
+
+		case "add Node":
+			try {
+				StdDraw.setPenColor(Color.BLUE);
+				StdDraw.setPenRadius(0.03);
+
+				String nodeId = JOptionPane.showInputDialog(null, "Enter node id and Choose a location in the graph");
+				if (nodeId == null) break;
+				String nodeX = JOptionPane.showInputDialog(null, "X: ");
+				if (nodeX == null) break;
+				String nodeY = JOptionPane.showInputDialog(null, "Y: ");
+				if (nodeY == null) break;
+				
+				Point3D p= new Point3D(Double.parseDouble(nodeX), Double.parseDouble(nodeY));
+				NodeData n =new NodeData(p);
+				gui.g.addNode(n);
+				gui.drawAll();
+
+			}
+			catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Please choose valid numbers");
+			}
+
+			break;
+
+		case "remove Node":
+			System.out.println(gui.algo.g.getV().size());
+			Collection<node_data> points = gui.algo.g.getV();
+			if(points.isEmpty()) break;
+			String[] arr = new String[points.size()];
+			int j = 0;
+			for (node_data node : points) {
+				arr[j] = node.getKey() + "";
+				j++;
+			}
+			Object removedNode = JOptionPane.showInputDialog(null, "Choose node to remove", "Message",
+					JOptionPane.INFORMATION_MESSAGE, null, arr, arr[0]);
+			if(removedNode==null) break;
+
+			gui.g.removeNode(Integer.parseInt((String) removedNode));
+			gui.drawAll();
+			break;
+
+		case "Connect":
+
+			Collection<node_data> nodes = gui.g.getV();
+			if(nodes.isEmpty()) break;
+			String[] array = new String[nodes.size()];
+			int z = 0;
+			for (node_data node : nodes) {
+				array[z] = node.getKey() + "";
+				z++;
+
+				gui.drawEdges();
+				gui.drawNodes();
+			}
+			Object selectedNodeSrc = JOptionPane.showInputDialog(null, "Choose src node", "Message",
+
+					JOptionPane.INFORMATION_MESSAGE, null, array, array[0]);
+			if(selectedNodeSrc==null) break;
+
+			Object selectedNodeDest = JOptionPane.showInputDialog(null, "Choose dest node", "Message",
+
+					JOptionPane.INFORMATION_MESSAGE, null, array, array[0]);
+			if(selectedNodeDest==null) break;
+
+			if(selectedNodeSrc.toString().equals(selectedNodeDest.toString())) {
+				JOptionPane.showMessageDialog(null, "Can't connect same src and dest","Messege",0);
+				break;
+			}
+
+			String edgeWeight = JOptionPane.showInputDialog(null, "Weight: ");
+			if (edgeWeight == null) break;
+			try {
+				if(Double.parseDouble(edgeWeight)<0){
+					JOptionPane.showMessageDialog(null, "Weight must be positive","Messege",0);
+					break;
+				}
+			}
+			catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "Weight must be double","Messege",0);
+			}
+
+			int src = Integer.parseInt(selectedNodeSrc.toString());
+			int dest = Integer.parseInt(selectedNodeDest.toString());
+			try {
+				gui.g.connect(src, dest, Double.parseDouble(edgeWeight));
+				gui.drawEdges();
+				gui.drawNodes();
+
+			}
+			catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, "There is already an edge between those to nodes","Messege",0);
+				break;
+			}
+
+			break;
+
+		case "remove Edge":
+			Collection<node_data> nodeCol = gui.g.getV();
+			if(nodeCol.isEmpty()) break;
+			String[] arrays = new String[nodeCol.size()];
+			int l = 0;
+			for (node_data node : nodeCol) {
+				arrays[l] = node.getKey() + "";
+				l++;
+			}
+			gui.drawEdges();
+			gui.drawNodes();
+
+			Object selectedSrc = JOptionPane.showInputDialog(null, "Choose src node", "Message",
+
+					JOptionPane.INFORMATION_MESSAGE, null, arrays, arrays[0]);
+			if(selectedSrc==null) break;
+
+			Object selectedDest = JOptionPane.showInputDialog(null, "Choose dest node", "Message",
+
+					JOptionPane.INFORMATION_MESSAGE, null, arrays, arrays[0]);
+			if(selectedDest==null) break;
+
+			int src1 = Integer.parseInt(selectedSrc.toString());
+			int dest1 = Integer.parseInt(selectedDest.toString());
+
+			if(gui.g.removeEdge(src1, dest1) != null) {
+				gui.drawAll();
+			}
+			else JOptionPane.showMessageDialog(null, "The edge doesn't exist","Messege",0);
+
+
+			break;
+
+		default:
+			break;
 		}
 	}
+	
+	private double path(StringBuilder sb) {
+		Collection<node_data> points = gui.g.getV();
+		if(points.isEmpty()) return Double.POSITIVE_INFINITY;
+		String[] arr = new String[points.size()];
+		int j = 0;
+		for (node_data node : points) {
+			arr[j] = node.getKey() + "";
+			j++;
+		}
+		gui.drawEdges();
+		gui.drawNodes();
+
+
+		Object selectedNodeSrc = JOptionPane.showInputDialog(null, "Choose src node", "Message",
+
+				JOptionPane.INFORMATION_MESSAGE, null, arr, arr[0]);
+		if(selectedNodeSrc==null) return Double.POSITIVE_INFINITY;
+
+		Object selectedNodeDest = JOptionPane.showInputDialog(null, "Choose dest node", "Message",
+
+				JOptionPane.INFORMATION_MESSAGE, null, arr, arr[0]);
+		if(selectedNodeDest==null) return Double.POSITIVE_INFINITY;
+
+		int src = Integer.parseInt((String) selectedNodeSrc);
+		int dest = Integer.parseInt((String) selectedNodeDest);
+		if (src==dest) {
+			JOptionPane.showMessageDialog(null, "You choose the same node for src and dest,\n so the shorest path is 0.","Messege",2);
+			return Double.POSITIVE_INFINITY;
+		}
+		StdDraw.setPenRadius(0.005);
+		StdDraw.setPenColor(Color.green);
+		if(gui.algo.shortestPath(src, dest)==null) 
+			JOptionPane.showMessageDialog(null, "The isn't a path between those two nodes","Messege",0);
+
+		else {
+			ArrayList<node_data> lista = (ArrayList<node_data>) gui.algo.shortestPath(src, dest);
+			for (int i = 0; i < lista.size() - 1; i++) {
+
+				line(lista.get(i).getLocation().x(), lista.get(i).getLocation().y(), lista.get(i + 1).getLocation().x(),
+						lista.get(i + 1).getLocation().y());
+
+				sb.append(lista.get(i).toString()+"->");
+			}
+			sb.append(dest+"");
+
+		}
+		return (gui.algo.shortestPathDist(src, dest));
+
+	}
+
+private node_data SHPA(StringBuilder sb) {
+	Collection<node_data> points = gui.g.getV();
+	if(points.isEmpty()) return null;
+	String[] arr = new String[points.size()];
+	int j = 0;
+	for (node_data node : points) {
+		arr[j] = node.getKey() + "";
+		j++;
+	}
+	gui.drawEdges();
+	gui.drawNodes();
+
+
+	Object selectedNodeSrc = JOptionPane.showInputDialog(null, "Choose src node", "Message",
+
+			JOptionPane.INFORMATION_MESSAGE, null, arr, arr[0]);
+	if(selectedNodeSrc==null) return null;
+
+	Object selectedNodeDest = JOptionPane.showInputDialog(null, "Choose dest node", "Message",
+
+			JOptionPane.INFORMATION_MESSAGE, null, arr, arr[0]);
+	if(selectedNodeDest==null) return null;
+
+	int src = Integer.parseInt((String) selectedNodeSrc);
+	int dest = Integer.parseInt((String) selectedNodeDest);
+	if (src==dest) {
+		JOptionPane.showMessageDialog(null, "You choose the same node for src and dest,\n so the shorest path is 0.","Messege",2);
+		return null;
+	}
+	StdDraw.setPenRadius(0.005);
+	StdDraw.setPenColor(Color.green);
+	if(gui.algo.shortestPath(src, dest).isEmpty()) 
+		JOptionPane.showMessageDialog(null, "The isn't a path between those two nodes","Messege",0);
+
+	else {
+		ArrayList<node_data> lista = (ArrayList<node_data>) gui.algo.shortestPath(src, dest);
+		for (int i = 0; i < lista.size() - 1; i++) {
+
+			line(lista.get(i).getLocation().x(), lista.get(i).getLocation().y(), lista.get(i + 1).getLocation().x(),
+					lista.get(i + 1).getLocation().y());
+
+			sb.append(lista.get(i).toString()+"->");
+		}
+		sb.append(dest+"");
+
+	}
+	List<node_data> ans= gui.algo.shortestPath(src, dest);
+	
+	return gui.g.getNode(dest);
+
+}
+
 
 
 	/***************************************************************************

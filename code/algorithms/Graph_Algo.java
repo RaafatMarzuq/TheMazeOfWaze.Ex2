@@ -41,21 +41,22 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 
 	
 	public graph g;
-
+	
+	
 	public Graph_Algo() {
 		this.g=g;
+		init(this.g);
 	}
 	
 	public graph getG() {
 		return g;
 	}
 
-	public void setG(graph g) {
-		this.g = g;
-	}
+	
 
 	public Graph_Algo(graph _graph) {
 		this.g=_graph;
+		init(_graph);
 		
 	}
 
@@ -64,13 +65,14 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	public void init(graph g) {
 		DGraph newG=(DGraph) g;
 		this.g= newG;
+		
 
 	}
 
 	@Override
 	public void init(String file_name) {
-
-
+		
+		
 
 		try
 		{    
@@ -114,8 +116,23 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 
 	@Override
 	public void save(String file_name) {
-		StdDraw.save(file_name);
-	}
+		try
+		{    
+			FileOutputStream file = new FileOutputStream(file_name); 
+			ObjectOutputStream out = new ObjectOutputStream(file); 
+
+			out.writeObject(g);  
+
+			out.close(); 
+			file.close(); 
+
+			System.out.println("Object has been serialized"); 
+		}   
+		catch(IOException ex) 
+		{ 
+			System.out.println("IOException is caught"); 
+		}
+		}
 
 
 	@Override
@@ -182,7 +199,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		set_infinity();
 		setTags();
 		deleteInfo();
-		if(src == dest) {return null;}
+		if(src == dest) {return new ArrayList<>();}
 		if(	shortestPathDist( src,  dest) == Double.POSITIVE_INFINITY) 
 		{
 			return null;
@@ -209,7 +226,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 				return ans;
 			}
 		}
-		return null;
+		return new ArrayList<>();
 
 	}
 	private void recusiveSP(int src, int dest, String info) {
@@ -244,10 +261,10 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		deleteInfo();
 		int n=targets.size();
 		ArrayBlockingQueue<NodeData> nodes = new ArrayBlockingQueue<NodeData>(n);
-		if(n == 0) { return null;}
+		if(n == 0) { return new ArrayList<node_data>();}
 
 
-		if(!checkTargets(targets)) {return null;}
+		if(!checkTargets(targets)) {return new ArrayList<node_data>();  }
 		List<node_data> list1=new ArrayList<node_data>();
 		for(Integer i :targets) {
 			list1.add(g.getNode(i));
@@ -255,7 +272,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		if(n == 1) {return list1;}
 		for (node_data node : list1) {
 			NodeData no=(NodeData) node;
-			if (no.OutEdges.values()== null) { return null;}
+			if (no.OutEdges.values()== null) { return new ArrayList<node_data>();}
 			nodes.add(no);
 			no.setTag(1);
 			while (!nodes.isEmpty()) {
@@ -269,7 +286,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 				nodes.remove();
 			} 
 			for (node_data cala : list1) {
-				if (cala.getTag()==0) return null;
+				if (cala.getTag()==0) return new ArrayList<node_data>();
 
 			}
 		}
@@ -295,7 +312,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			ans.add(list1.get(list1.size()-1));
 		}
 		{
-			return ans != null? null : null;
+			return ans != null? null : new ArrayList<>();
 		}
 
 	}

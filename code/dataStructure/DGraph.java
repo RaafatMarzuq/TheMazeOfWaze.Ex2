@@ -1,5 +1,6 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import javax.swing.text.GapContent;
 import sun.net.www.content.audio.wav;
 
 
-public class DGraph implements graph {
+public class DGraph implements graph,Serializable {
 	public int nodeSize=0,edgeSize=0;
 	public   int MC=0;
 	public HashMap<Integer, HashMap<Integer,edge_data>> R = new HashMap<Integer, HashMap<Integer,edge_data>>();
@@ -152,12 +153,14 @@ public class DGraph implements graph {
 	public edge_data removeEdge(int src, int dest) {
 		edge_data e= (edge) getEdge(src, dest);
 		if(R.containsKey(src)) {
-			NodeData n1=	(NodeData) this.G.get(e.getDest());
+			if(R.get(src).containsKey(dest)) {
+			NodeData n1=(NodeData) this.R.get(src).get(e.getDest());
 			n1.OutEdges.remove(e.getDest());
 			R.get(src).values().remove(e);
 			MC++;
 			edgeSize--;
 			return e;
+			}
 		}
 
 		return null;

@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.sun.org.apache.xml.internal.security.Init;
+
 import algorithms.Graph_Algo;
 import dataStructure.DGraph;
 import dataStructure.edge_data;
@@ -15,17 +17,26 @@ import utils.StdDraw;
 
 public class graphGUI  implements Serializable {
 	
-	private graph g;
-	private Graph_Algo algo;
+public graph g=new DGraph();
+public Graph_Algo algo=new Graph_Algo(this.g);
 
 	
 	public graphGUI(graph g) {
 		this.g = g;	
-		this.algo = new Graph_Algo();
+		this.algo = new Graph_Algo(g);
+		StdDraw.setGui(this);
 	}
 	public graphGUI() {
-		algo=new Graph_Algo();
+		algo=new Graph_Algo(this.g);
 		g=new DGraph();
+		StdDraw.setGui(this);
+	}
+	public void init(String file_name) {
+		this.algo.init(file_name);
+		this.g= algo.g;
+		drawAll();
+		
+		
 	}
 	public void drawAll() {
 		
@@ -85,4 +96,5 @@ public class graphGUI  implements Serializable {
 			}
 		}
 	}
+	
 	}
