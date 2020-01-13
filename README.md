@@ -24,6 +24,8 @@ The main purpose of this project is to build any directed graph using the Nodes 
   
   ****graphGUI**** :- use it to draw the graph we build .
  for example her are some graphs :
+ ### To make your own graphs and play with the project clone the project and run the "The Maze Of Waze " jar
+
 
 ****1)**** 
 ![‏‏צילום מסך (25)](https://user-images.githubusercontent.com/57416873/71784590-9e763600-2ffd-11ea-890f-f86bcfcef8f4.png)
@@ -34,4 +36,3 @@ The main purpose of this project is to build any directed graph using the Nodes 
 ![‏‏צילום מסך (27)](https://user-images.githubusercontent.com/57416873/71784593-a1712680-2ffd-11ea-9689-91a7dd593834.png)
 
  
- ***to make your own graphs and play with the project clone the project and run the "The Maze Of Waze " jar/***
