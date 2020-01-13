@@ -34,4 +34,4 @@ The main purpose of this project is to build any directed graph using the Nodes 
 ![‏‏צילום מסך (27)](https://user-images.githubusercontent.com/57416873/71784593-a1712680-2ffd-11ea-9689-91a7dd593834.png)
 
  
- 
+ ***to make your own graphs and play with the project clone the project and run the "The Maze Of Waze " jar/***
